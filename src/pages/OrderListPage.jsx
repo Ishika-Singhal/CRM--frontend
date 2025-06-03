@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import crmApi from '../api/crmApi';
 import MessageModal from '../components/MessageModal';
-import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'; // Icons
-
-/**
- * OrderListPage component displays a list of all orders.
- * It allows adding new orders, updating existing ones, and deleting orders.
- */
+import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 const OrderListPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,13 +9,13 @@ const OrderListPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', message: '', type: 'info' });
 
-  // State for Add/Edit Order Modal
+  
   const [showOrderFormModal, setShowOrderFormModal] = useState(false);
-  const [currentOrder, setCurrentOrder] = useState(null); // Null for add, object for edit
+  const [currentOrder, setCurrentOrder] = useState(null);
   const [formData, setFormData] = useState({
     orderId: '',
     customerId: '',
-    orderDate: new Date().toISOString().split('T')[0], // Default to today
+    orderDate: new Date().toISOString().split('T')[0],
     totalAmount: '',
     items: [{ productId: '', productName: '', quantity: '', price: '' }],
     status: 'completed'
@@ -35,10 +30,10 @@ const OrderListPage = () => {
     setError(null);
     try {
       const response = await crmApi.getOrders();
-      if (response.data.success) { // FIX: Access .data.success
-        setOrders(response.data.orders); // FIX: Access .data.orders
+      if (response.data.success) { 
+        setOrders(response.data.orders); 
       } else {
-        setError(response.data.message || 'Failed to fetch orders.'); // FIX: Access .data.message
+        setError(response.data.message || 'Failed to fetch orders.'); 
       }
     } catch (err) {
       console.error('Error fetching orders:', err);
@@ -74,7 +69,7 @@ const OrderListPage = () => {
   };
 
   const handleAddOrderClick = () => {
-    setCurrentOrder(null); // Clear for new order
+    setCurrentOrder(null); 
     setFormData({
       orderId: '',
       customerId: '',
@@ -87,13 +82,13 @@ const OrderListPage = () => {
   };
 
   const handleEditOrderClick = (order) => {
-    setCurrentOrder(order); // Set order for editing
+    setCurrentOrder(order); 
     setFormData({
       orderId: order.orderId,
       customerId: order.customerId,
-      orderDate: new Date(order.orderDate).toISOString().split('T')[0], // Format date for input
+      orderDate: new Date(order.orderDate).toISOString().split('T')[0], 
       totalAmount: order.totalAmount,
-      items: order.items.length > 0 ? order.items : [{ productId: '', productName: '', quantity: '', price: '' }], // Ensure at least one item field
+      items: order.items.length > 0 ? order.items : [{ productId: '', productName: '', quantity: '', price: '' }], 
       status: order.status
     });
     setShowOrderFormModal(true);
@@ -102,10 +97,10 @@ const OrderListPage = () => {
   const handleSubmitOrderForm = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setShowOrderFormModal(false); // Close form modal immediately
+    setShowOrderFormModal(false); 
 
     try {
-      // Convert number fields in items
+      
       const itemsToSubmit = formData.items.map(item => ({
         ...item,
         quantity: Number(item.quantity),
@@ -120,17 +115,15 @@ const OrderListPage = () => {
 
       let response;
       if (currentOrder) {
-        // Update existing order
         response = await crmApi.updateOrder(currentOrder.orderId, dataToSubmit);
       } else {
-        // Create new order
         response = await crmApi.createOrder(dataToSubmit);
       }
 
-      if (response.data.success) { // FIX: Access .data.success
+      if (response.data.success) {
         setModalContent({ title: 'Success', message: `Order ${currentOrder ? 'updated' : 'created'} successfully!`, type: 'success' });
         setShowModal(true);
-        fetchOrders(); // Refresh the list
+        fetchOrders(); 
       } else {
         setModalContent({ title: 'Error', message: response.data.message || `Failed to ${currentOrder ? 'update' : 'create'} order.`, type: 'error' }); // FIX: Access .data.message
         setShowModal(true);
@@ -155,17 +148,17 @@ const OrderListPage = () => {
   };
 
   const confirmDeleteOrder = async (confirmed, orderId) => {
-    setShowModal(false); // Close the confirmation modal
+    setShowModal(false);
     if (confirmed) {
       setLoading(true);
       try {
         const response = await crmApi.deleteOrder(orderId);
-        if (response.data.success) { // FIX: Access .data.success
+        if (response.data.success) { 
           setModalContent({ title: 'Success', message: 'Order deleted successfully!', type: 'success' });
           setShowModal(true);
-          fetchOrders(); // Refresh the list
+          fetchOrders(); 
         } else {
-          setModalContent({ title: 'Error', message: response.data.message || 'Failed to delete order.', type: 'error' }); // FIX: Access .data.message
+          setModalContent({ title: 'Error', message: response.data.message || 'Failed to delete order.', type: 'error' });
           setShowModal(true);
         }
       } catch (err) {
@@ -285,7 +278,6 @@ const OrderListPage = () => {
         </div>
       )}
 
-      {/* Add/Edit Order Modal */}
       <MessageModal
         show={showOrderFormModal}
         onClose={() => setShowOrderFormModal(false)}
@@ -371,7 +363,6 @@ const OrderListPage = () => {
               </select>
             </div>
 
-            {/* Order Items Section */}
             <div className="border-t border-gray-200 pt-4 mt-4">
               <h3 className="text-lg font-medium text-gray-900 mb-3">Order Items</h3>
               {formData.items.map((item, index) => (
@@ -472,7 +463,6 @@ const OrderListPage = () => {
         onConfirm={null}
       />
 
-      {/* General success/error modal */}
       <MessageModal
         show={showModal && modalContent.type !== 'custom'}
         onClose={() => setShowModal(false)}

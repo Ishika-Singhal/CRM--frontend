@@ -2,14 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import crmApi from '../api/crmApi';
 import MessageModal from '../components/MessageModal';
-import { ArrowLeftIcon } from '@heroicons/react/24/outline'; // Icon
+import { ArrowLeftIcon } from '@heroicons/react/24/outline'; 
 
-/**
- * CampaignDetailPage component displays detailed information about a specific campaign,
- * including its segmentation rules and communication logs.
- */
+
 const CampaignDetailPage = () => {
-  const { id } = useParams(); // Get campaign ID from URL
+  const { id } = useParams(); 
   const [campaign, setCampaign] = useState(null);
   const [communicationLogs, setCommunicationLogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,23 +19,22 @@ const CampaignDetailPage = () => {
       setLoading(true);
       setError(null);
       try {
-        // Fetch campaign details
+   
         const campaignResponse = await crmApi.getCampaignById(id);
-        if (campaignResponse.data.success) { // FIX: Access .data.success
-          setCampaign(campaignResponse.data.campaign); // FIX: Access .data.campaign
+        if (campaignResponse.data.success) { 
+          setCampaign(campaignResponse.data.campaign); 
         } else {
-          setError(campaignResponse.data.message || 'Failed to fetch campaign details.'); // FIX: Access .data.message
-          setModalContent({ title: 'Error', message: campaignResponse.data.message || 'Failed to fetch campaign details.', type: 'error' }); // FIX: Access .data.message
+          setError(campaignResponse.data.message || 'Failed to fetch campaign details.'); 
+          setModalContent({ title: 'Error', message: campaignResponse.data.message || 'Failed to fetch campaign details.', type: 'error' }); 
           setShowModal(true);
         }
 
-        // Fetch communication logs for the campaign
+        
         const logsResponse = await crmApi.getCommunicationLogsForCampaign(id);
-        if (logsResponse.data.success) { // FIX: Access .data.success
-          setCommunicationLogs(logsResponse.data.logs); // FIX: Access .data.logs
+        if (logsResponse.data.success) { 
+          setCommunicationLogs(logsResponse.data.logs); 
         } else {
-          console.error('Failed to fetch communication logs:', logsResponse.data.message); // FIX: Access .data.message
-          // Don't block the page if logs fail, just show an error for logs section
+          console.error('Failed to fetch communication logs:', logsResponse.data.message); 
         }
       } catch (err) {
         console.error('Error fetching campaign details or logs:', err);
@@ -85,7 +81,6 @@ const CampaignDetailPage = () => {
     );
   }
 
-  // Helper to render segment rules recursively
   const renderRules = (rules) => {
     if (!rules || !rules.rules || rules.rules.length === 0) {
       return <span className="text-gray-500 italic">No rules defined.</span>;
@@ -100,12 +95,10 @@ const CampaignDetailPage = () => {
           {rules.rules.map((rule, index) => (
             <li key={index} className="text-sm text-gray-700">
               {rule.operator ? (
-                // Nested group
                 <div className="ml-4 border-l-2 border-indigo-200 pl-3">
                   {renderRules(rule)}
                 </div>
               ) : (
-                // Individual rule
                 <>
                   <span className="font-medium">{rule.field}</span>{' '}
                   <span className="font-medium text-indigo-500">{rule.condition}</span>{' '}
@@ -170,7 +163,6 @@ const CampaignDetailPage = () => {
         </div>
       </div>
 
-      {/* Campaign Delivery Stats */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Delivery Statistics</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
@@ -189,7 +181,6 @@ const CampaignDetailPage = () => {
         </div>
       </div>
 
-      {/* Communication Logs */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Communication Logs</h2>
         {communicationLogs.length === 0 ? (

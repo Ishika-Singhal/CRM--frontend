@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import MessageModal from '../components/MessageModal'; // Import the custom modal
-
-/**
- * LoginPage component handles Google OAuth login initiation and displays login status.
- */
+import MessageModal from '../components/MessageModal';
 const LoginPage = ({ message: propMessage }) => {
   const location = useLocation();
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', message: '', type: 'info' });
 
   useEffect(() => {
-    // Check for messages from redirects (e.g., login-failed)
+   
     if (propMessage) {
       setModalContent({ title: 'Login Error', message: propMessage, type: 'error' });
       setShowModal(true);
     } else if (location.search.includes('error')) {
-      // Basic check for error query param from Google OAuth callback
+      
       setModalContent({ title: 'Login Failed', message: 'Google authentication failed. Please try again.', type: 'error' });
       setShowModal(true);
     }
   }, [location, propMessage]);
 
   const handleGoogleLogin = () => {
-    // Redirect to backend's Google OAuth initiation endpoint
-    // The backend will then redirect to Google for authentication
-    // and finally back to our frontend's /dashboard or /login-failed
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
   };
 
@@ -46,7 +39,7 @@ const LoginPage = ({ message: propMessage }) => {
             className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-              {/* Google Icon SVG */}
+              
               <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M22.56 12.27c0-.78-.07-1.53-.2-2.27H12v4.51h6.59c-.31 1.59-1.16 2.8-2.6 3.63v3.71h3.71c2.17-2 3.44-4.83 3.44-8.08z" fill="#4285F4"/>
                 <path d="M12 23c2.97 0 5.47-1.02 7.29-2.79l-3.71-3.71c-.96.64-2.2 1.02-3.58 1.02-2.74 0-5.08-1.85-5.91-4.39H2.03v3.71C3.89 21.13 7.64 23 12 23z" fill="#34A853"/>

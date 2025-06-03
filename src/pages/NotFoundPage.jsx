@@ -1,9 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-/**
- * NotFoundPage component displayed when a route is not found (404).
- */
 const NotFoundPage = () => {
   return (
     <div className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center bg-gray-50 text-center px-4 py-12">

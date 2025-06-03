@@ -3,23 +3,19 @@ const BACKEND_URL = import.meta.VITE_BACKEND_URL || 'http://localhost:5000';
 
 const crmApi = axios.create({
   baseURL: BACKEND_URL,
-  withCredentials: true, // Important for sending cookies (session/auth)
+  withCredentials: true, 
 });
 
-// --- Authentication APIs ---
 const auth = {
-  // Google OAuth login is handled by redirecting the browser, not an Axios call
-  // login: () => crmApi.get('/auth/google'), // Not directly used here, browser handles redirect
+  
 
   logout: () => crmApi.get('/auth/logout'),
   getCurrentUser: () => crmApi.get('/auth/current_user'),
 };
 
-// --- Customer APIs ---
 const customers = {
   createCustomer: (customerData) => crmApi.post('/api/customers', customerData),
   getCustomers: () => crmApi.get('/api/customers', {
-    // Added headers to prevent caching for GET requests
     headers: {
       'Cache-Control': 'no-cache',
       'Pragma': 'no-cache',
@@ -37,11 +33,9 @@ const customers = {
   deleteCustomer: (id) => crmApi.delete(`/api/customers/${id}`),
 };
 
-// --- Order APIs ---
 const orders = {
   createOrder: (orderData) => crmApi.post('/api/orders', orderData),
   getOrders: () => crmApi.get('/api/orders', {
-    // Added headers to prevent caching for GET requests
     headers: {
       'Cache-Control': 'no-cache',
       'Pragma': 'no-cache',
@@ -59,11 +53,9 @@ const orders = {
   deleteOrder: (id) => crmApi.delete(`/api/orders/${id}`),
 };
 
-// --- Campaign APIs ---
 const campaigns = {
   createCampaign: (campaignData) => crmApi.post('/api/campaigns', campaignData),
   getCampaigns: () => crmApi.get('/api/campaigns', {
-    // Added headers to prevent caching for GET requests
     headers: {
       'Cache-Control': 'no-cache',
       'Pragma': 'no-cache',
@@ -82,11 +74,8 @@ const campaigns = {
   getAudiencePreview: (segmentRules) => crmApi.post('/api/campaigns/audience-preview', { segmentRules }),
 };
 
-// --- Communication Log APIs ---
 const communicationLogs = {
-  // handleDeliveryReceipt is called by the backend simulator, not directly by frontend
   getCommunicationLogsForCampaign: (campaignId) => crmApi.get(`/api/communication-logs/campaign/${campaignId}`, {
-    // Added headers to prevent caching for GET requests
     headers: {
       'Cache-Control': 'no-cache',
       'Pragma': 'no-cache',
@@ -95,12 +84,10 @@ const communicationLogs = {
   }),
 };
 
-// --- AI APIs ---
 const ai = {
   generateSegmentRulesFromAI: (naturalLanguageQuery) => crmApi.post('/api/ai/segment-rules', { naturalLanguageQuery }),
 };
 
-// Combine all API modules into a single export
 const api = {
   ...auth,
   ...customers,

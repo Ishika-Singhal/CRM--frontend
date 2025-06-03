@@ -2,10 +2,7 @@ import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { CheckCircleIcon, XCircleIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 
-/**
- * MessageModal component for displaying custom alerts, confirmations, or information.
- * Replaces browser's native alert/confirm.
- */
+
 const MessageModal = ({ show, onClose, title, message, type = 'info', onConfirm }) => {
   let IconComponent;
   let iconBgClass;
@@ -23,7 +20,7 @@ const MessageModal = ({ show, onClose, title, message, type = 'info', onConfirm 
       iconColorClass = 'text-red-600';
       break;
     case 'confirm':
-      IconComponent = InformationCircleIcon; // Or ExclamationTriangleIcon for warning
+      IconComponent = InformationCircleIcon; 
       iconBgClass = 'bg-yellow-100';
       iconColorClass = 'text-yellow-600';
       break;

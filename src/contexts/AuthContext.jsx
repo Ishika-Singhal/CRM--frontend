@@ -1,25 +1,21 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import crmApi from '../api/crmApi'; // Import your API client
+import crmApi from '../api/crmApi'; 
 
-// Create the AuthContext
+
 export const AuthContext = createContext(null);
 
-/**
- * AuthProvider component manages the global authentication state of the application.
- * It fetches the current user status on mount and provides it to its children.
- */
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Function to fetch current user status from backend
+
   const fetchCurrentUser = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await crmApi.getCurrentUser();
-      if (response.data.isAuthenticated) { // FIX: Access .data.isAuthenticated
-        setUser(response.data.user); // FIX: Access .data.user
+      if (response.data.isAuthenticated) { 
+        setUser(response.data.user); 
         setIsAuthenticated(true);
       } else {
         setUser(null);
@@ -34,18 +30,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Fetch user on initial component mount
   useEffect(() => {
     fetchCurrentUser();
   }, [fetchCurrentUser]);
 
-  // Function to update auth state after successful login (e.g., from Google OAuth callback)
+ 
   const login = (userData) => {
     setUser(userData);
     setIsAuthenticated(true);
   };
 
-  // Function to clear auth state on logout
+
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
@@ -57,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     isLoading,
     login,
     logout,
-    fetchCurrentUser // Expose fetchCurrentUser for manual refresh if needed
+    fetchCurrentUser 
   };
 
   return (

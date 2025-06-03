@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import crmApi from '../api/crmApi';
-import MessageModal from '../components/MessageModal'; // Import the custom modal
-import { PlusIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/outline'; // Icons
+import MessageModal from '../components/MessageModal'; 
+import { PlusIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-/**
- * CampaignListPage component displays a list of all campaigns.
- * Allows viewing campaign details and deleting campaigns.
- */
 const CampaignListPage = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,10 +21,10 @@ const CampaignListPage = () => {
     setError(null);
     try {
       const response = await crmApi.getCampaigns();
-      if (response.data.success) { // FIX: Access .data.success
-        setCampaigns(response.data.campaigns); // FIX: Access .data.campaigns
+      if (response.data.success) { 
+        setCampaigns(response.data.campaigns); //
       } else {
-        setError(response.data.message || 'Failed to fetch campaigns.'); // FIX: Access .data.message
+        setError(response.data.message || 'Failed to fetch campaigns.'); // 
       }
     } catch (err) {
       console.error('Error fetching campaigns:', err);
@@ -53,12 +49,12 @@ const CampaignListPage = () => {
     if (confirmed && campaignToDelete) {
       try {
         const response = await crmApi.deleteCampaign(campaignToDelete);
-        if (response.data.success) { // FIX: Access .data.success
+        if (response.data.success) {
           setModalContent({ title: 'Success', message: 'Campaign deleted successfully!', type: 'success' });
           setShowModal(true);
-          fetchCampaigns(); // Refresh the list
+          fetchCampaigns(); 
         } else {
-          setModalContent({ title: 'Error', message: response.data.message || 'Failed to delete campaign.', type: 'error' }); // FIX: Access .data.message
+          setModalContent({ title: 'Error', message: response.data.message || 'Failed to delete campaign.', type: 'error' }); 
           setShowModal(true);
         }
       } catch (err) {

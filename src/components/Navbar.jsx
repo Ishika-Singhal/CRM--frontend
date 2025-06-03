@@ -1,14 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth'; // Import the custom auth hook
-import crmApi from '../api/crmApi'; // Import the API client
-import { Dialog, Transition } from '@headlessui/react'; // For modal
+import useAuth from '../hooks/useAuth'; // 
+import crmApi from '../api/crmApi'; // 
+import { Dialog, Transition } from '@headlessui/react'; 
 import { Fragment, useState } from 'react';
 import { ExclamationTriangleIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'; // Icons
 
-/**
- * Navbar component provides navigation links and handles user login/logout.
- */
 const Navbar = () => {
   const { isAuthenticated, user, logout: clientLogout, isLoading } = useAuth();
   const navigate = useNavigate();
@@ -17,19 +14,19 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      // Access response.data.success
+
       const response = await crmApi.logout();
-      if (response.data.success) { // FIX: Access .data.success
-        clientLogout(); // Update frontend auth state
-        setShowLogoutModal(false); // Close modal
-        navigate('/login'); // Redirect to login page
+      if (response.data.success) { 
+        clientLogout(); 
+        setShowLogoutModal(false);
+        navigate('/login');
       } else {
         console.error('Logout failed:', response.data.message || 'Unknown error');
-        // Handle error, maybe show a toast notification
+  
       }
     } catch (error) {
       console.error('Logout failed:', error);
-      // Handle error, maybe show a toast notification
+    
     }
   };
 
@@ -44,14 +41,13 @@ const Navbar = () => {
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo/Brand */}
+     
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 text-2xl font-bold text-indigo-600">
               Mini CRM
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               {navigation.map((item) => (
@@ -68,7 +64,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Auth & User Info */}
+     
           <div className="hidden md:flex items-center space-x-4">
             {isLoading ? (
               <div className="text-gray-500 text-sm">Loading...</div>
@@ -101,7 +97,7 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile menu button */}
+        
           <div className="-mr-2 flex md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -118,7 +114,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+     
       <Transition
         show={mobileMenuOpen}
         as={Fragment}
@@ -194,7 +190,7 @@ const Navbar = () => {
       </Transition>
 
 
-      {/* Logout Confirmation Modal */}
+
       <Transition.Root show={showLogoutModal} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={setShowLogoutModal}>
           <Transition.Child

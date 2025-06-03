@@ -3,12 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import RuleBuilder from '../components/RuleBuilder';
 import MessageModal from '../components/MessageModal';
 import crmApi from '../api/crmApi';
-import { SparklesIcon } from '@heroicons/react/24/outline'; // AI icon
-
-/**
- * CampaignCreatePage component allows users to create new campaigns.
- * It includes a dynamic rule builder for segmentation and an AI-powered feature.
- */
+import { SparklesIcon } from '@heroicons/react/24/outline'; 
 const CampaignCreatePage = () => {
   const navigate = useNavigate();
   const [campaignName, setCampaignName] = useState('');
@@ -25,17 +20,13 @@ const CampaignCreatePage = () => {
   const [generatingRules, setGeneratingRules] = useState(false);
   const [aiError, setAiError] = useState(null);
 
-  // Removed the useEffect that was causing potential infinite loops.
-  // The initial state for segmentRules is now handled solely by useState.
-  // If rules need to be loaded for editing, that logic should be in a separate useEffect
-  // that depends on a campaign ID prop, not on segmentRules itself.
 
   const handleCreateCampaign = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    // Basic validation
+  
     if (!campaignName || !messageTemplate || !segmentRules.rules.length) {
       setModalContent({ title: 'Validation Error', message: 'Please fill in all required fields and define at least one segmentation rule.', type: 'error' });
       setShowModal(true);
@@ -49,8 +40,7 @@ const CampaignCreatePage = () => {
         description,
         messageTemplate,
         segmentRules,
-        // Status can be 'draft' initially, or 'scheduled'/'sent' if you add scheduling
-        status: 'sent', // For demo, directly mark as 'sent' to trigger simulation
+        status: 'sent', 
       };
 
       const response = await crmApi.createCampaign(campaignData);
@@ -58,7 +48,7 @@ const CampaignCreatePage = () => {
       if (response.data.success) { // FIX: Access .data.success
         setModalContent({ title: 'Success', message: 'Campaign created successfully! Delivery simulation initiated.', type: 'success' });
         setShowModal(true);
-        // Redirect to campaign history after a short delay for user to see success message
+        // Redirect to campaign history  a short delay for user to see success message
         setTimeout(() => {
           navigate('/campaigns');
         }, 2000);
@@ -115,7 +105,7 @@ const CampaignCreatePage = () => {
 
       <form onSubmit={handleCreateCampaign} className="bg-white rounded-lg shadow-md p-6 mb-8">
         <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
-          {/* Campaign Name */}
+   
           <div>
             <label htmlFor="campaignName" className="block text-sm font-medium text-gray-700">
               Campaign Name <span className="text-red-500">*</span>
@@ -134,7 +124,7 @@ const CampaignCreatePage = () => {
             </div>
           </div>
 
-          {/* Description */}
+     
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700">
               Description
@@ -152,7 +142,7 @@ const CampaignCreatePage = () => {
             </div>
           </div>
 
-          {/* Message Template */}
+       
           <div className="sm:col-span-2">
             <label htmlFor="messageTemplate" className="block text-sm font-medium text-gray-700">
               Message Template <span className="text-red-500">*</span>
@@ -173,7 +163,7 @@ const CampaignCreatePage = () => {
           </div>
         </div>
 
-        {/* AI-Powered Feature: Natural Language to Segment Rules */}
+    
         <div className="mt-8 border-t border-gray-200 pt-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
             <SparklesIcon className="h-6 w-6 mr-2 text-purple-600" /> AI-Powered Segmentation
@@ -203,7 +193,7 @@ const CampaignCreatePage = () => {
         </div>
 
 
-        {/* Dynamic Rule Builder */}
+
         <div className="mt-8 border-t border-gray-200 pt-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Customer Segmentation Rules</h2>
           <RuleBuilder
@@ -213,7 +203,7 @@ const CampaignCreatePage = () => {
           />
         </div>
 
-        {/* Action Buttons */}
+     
         <div className="mt-8 flex justify-end space-x-4">
           <button
             type="button"

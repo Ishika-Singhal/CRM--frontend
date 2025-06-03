@@ -1,10 +1,5 @@
 import React from 'react';
-import useAuth from '../hooks/useAuth'; // Import the custom auth hook
-
-/**
- * AuthStatus component displays the current authentication status and user information.
- * It's a simple utility component to show who is logged in.
- */
+import useAuth from '../hooks/useAuth'; 
 const AuthStatus = () => {
   const { user, isAuthenticated, isLoading } = useAuth();
 

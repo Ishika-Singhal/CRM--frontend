@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import crmApi from '../api/crmApi';
 import MessageModal from '../components/MessageModal';
-import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'; // Icons
+import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'; 
 
-/**
- * CustomerListPage component displays a list of all customers.
- * It allows adding new customers, updating existing ones, and deleting customers.
- */
 const CustomerListPage = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,9 +10,9 @@ const CustomerListPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', message: '', type: 'info' });
 
-  // State for Add/Edit Customer Modal
+
   const [showCustomerFormModal, setShowCustomerFormModal] = useState(false);
-  const [currentCustomer, setCurrentCustomer] = useState(null); // Null for add, object for edit
+  const [currentCustomer, setCurrentCustomer] = useState(null); 
   const [formData, setFormData] = useState({
     customerId: '',
     name: '',
@@ -34,10 +30,10 @@ const CustomerListPage = () => {
     setError(null);
     try {
       const response = await crmApi.getCustomers();
-      if (response.data.success) { // FIX: Access .data.success
-        setCustomers(response.data.customers); // FIX: Access .data.customers
+      if (response.data.success) { 
+        setCustomers(response.data.customers); 
       } else {
-        setError(response.data.message || 'Failed to fetch customers.'); // FIX: Access .data.message
+        setError(response.data.message || 'Failed to fetch customers.'); 
       }
     } catch (err) {
       console.error('Error fetching customers:', err);
@@ -52,7 +48,7 @@ const CustomerListPage = () => {
   };
 
   const handleAddCustomerClick = () => {
-    setCurrentCustomer(null); // Clear for new customer
+    setCurrentCustomer(null); 
     setFormData({
       customerId: '',
       name: '',
@@ -64,7 +60,7 @@ const CustomerListPage = () => {
   };
 
   const handleEditCustomerClick = (customer) => {
-    setCurrentCustomer(customer); // Set customer for editing
+    setCurrentCustomer(customer); 
     setFormData({
       customerId: customer.customerId,
       name: customer.name,
@@ -78,22 +74,22 @@ const CustomerListPage = () => {
   const handleSubmitCustomerForm = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setShowCustomerFormModal(false); // Close form modal immediately
+    setShowCustomerFormModal(false); 
 
     try {
       let response;
       if (currentCustomer) {
-        // Update existing customer
+        
         response = await crmApi.updateCustomer(currentCustomer.customerId, formData);
       } else {
-        // Create new customer
+   
         response = await crmApi.createCustomer(formData);
       }
 
-      if (response.data.success) { // FIX: Access .data.success
+      if (response.data.success) { 
         setModalContent({ title: 'Success', message: `Customer ${currentCustomer ? 'updated' : 'created'} successfully!`, type: 'success' });
         setShowModal(true);
-        fetchCustomers(); // Refresh the list
+        fetchCustomers(); 
       } else {
         setModalContent({ title: 'Error', message: response.data.message || `Failed to ${currentCustomer ? 'update' : 'create'} customer.`, type: 'error' }); // FIX: Access .data.message
         setShowModal(true);
@@ -118,17 +114,17 @@ const CustomerListPage = () => {
   };
 
   const confirmDeleteCustomer = async (confirmed, customerId) => {
-    setShowModal(false); // Close the confirmation modal
+    setShowModal(false);
     if (confirmed) {
       setLoading(true);
       try {
         const response = await crmApi.deleteCustomer(customerId);
-        if (response.data.success) { // FIX: Access .data.success
+        if (response.data.success) { 
           setModalContent({ title: 'Success', message: 'Customer deleted successfully!', type: 'success' });
           setShowModal(true);
-          fetchCustomers(); // Refresh the list
+          fetchCustomers(); 
         } else {
-          setModalContent({ title: 'Error', message: response.data.message || 'Failed to delete customer.', type: 'error' }); // FIX: Access .data.message
+          setModalContent({ title: 'Error', message: response.data.message || 'Failed to delete customer.', type: 'error' });
           setShowModal(true);
         }
       } catch (err) {
@@ -142,7 +138,7 @@ const CustomerListPage = () => {
   };
 
 
-  if (loading && !customers.length) { // Only show full loading if no data is present yet
+  if (loading && !customers.length) { 
     return (
       <div className="flex justify-center items-center h-64 text-lg font-semibold text-gray-700">
         Loading customers...
@@ -150,7 +146,7 @@ const CustomerListPage = () => {
     );
   }
 
-  if (error && !customers.length) { // Only show full error if no data is present yet
+  if (error && !customers.length) { 
     return (
       <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md" role="alert">
         <p className="font-bold">Error!</p>
@@ -248,7 +244,7 @@ const CustomerListPage = () => {
         </div>
       )}
 
-      {/* Add/Edit Customer Modal */}
+      
       <MessageModal
         show={showCustomerFormModal}
         onClose={() => setShowCustomerFormModal(false)}
@@ -267,7 +263,7 @@ const CustomerListPage = () => {
                 onChange={handleFormChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 required
-                disabled={!!currentCustomer} // Disable editing customerId for existing customers
+                disabled={!!currentCustomer} 
               />
             </div>
             <div>
@@ -342,11 +338,11 @@ const CustomerListPage = () => {
             </div>
           </form>
         }
-        type="custom" // Use 'custom' type to render JSX message
-        onConfirm={null} // No confirm button for custom content
+        type="custom"
+        onConfirm={null} 
       />
 
-      {/* General success/error modal */}
+      
       <MessageModal
         show={showModal && modalContent.type !== 'custom'}
         onClose={() => setShowModal(false)}

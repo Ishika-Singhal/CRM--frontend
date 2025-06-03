@@ -1,21 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { PlusCircleIcon, MinusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
-import crmApi from '../api/crmApi'; // Import the API client
-
-/**
- * RuleBuilder component allows dynamic creation of segmentation rules.
- * It supports nested AND/OR operators and various field conditions.
- * It also provides an audience size preview.
- */
+import crmApi from '../api/crmApi'; 
 const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
-  // Internal state for rules, managed by the parent component via props
+  
   const [internalRules, setInternalRules] = useState(rules);
   const [audienceSize, setAudienceSize] = useState(0);
   const [sampleEmails, setSampleEmails] = useState([]);
   const [loadingAudience, setLoadingAudience] = useState(false);
   const [audienceError, setAudienceError] = useState(null);
 
-  // Define available fields and their types
   const fields = [
     { value: 'totalSpend', label: 'Total Spend', type: 'number' },
     { value: 'totalVisits', label: 'Total Visits', type: 'number' },
@@ -26,7 +19,7 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
     { value: 'phone', label: 'Phone', type: 'string' },
   ];
 
-  // Define conditions based on field type
+
   const getConditionsForField = (fieldType) => {
     switch (fieldType) {
       case 'number':
@@ -47,25 +40,20 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
         ];
       case 'date':
         return [
-          { value: 'INACTIVE_DAYS', label: 'Inactive for (days)' }, // e.g., value = 90
-          { value: 'ACTIVE_DAYS', label: 'Active within (days)' }, // e.g., value = 30
+          { value: 'INACTIVE_DAYS', label: 'Inactive for (days)' }, 
+          { value: 'ACTIVE_DAYS', label: 'Active within (days)' }, 
         ];
       default:
         return [];
     }
   };
 
-  // Effect to sync internal state with parent's `rules` prop
   useEffect(() => {
-    // Only update internalRules if the rules prop has actually changed content
-    // This prevents unnecessary re-renders and useCallback re-creations
     if (JSON.stringify(internalRules) !== JSON.stringify(rules)) {
       setInternalRules(rules);
     }
-  }, [rules, internalRules]); // Keep internalRules here to compare its current state
+  }, [rules, internalRules]); 
 
-  // Function to update a rule or rule group recursively
-  // Removed `currentRules` from dependency array as it's passed as an argument
   const updateRule = useCallback((currentRules, path, key, value) => {
     const newRules = { ...currentRules };
     let target = newRules;
@@ -74,10 +62,7 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
     }
     target[key] = value;
     return newRules;
-  }, []); // Dependency array is empty
-
-  // Function to add a new rule to a group recursively
-  // Removed `currentRules` from dependency array as it's passed as an argument
+  }, []); 
   const addRule = useCallback((currentRules, path, isGroup = false) => {
     const newRules = { ...currentRules };
     let target = newRules;
@@ -92,10 +77,7 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
       target.rules.push({ field: '', condition: '', value: '' });
     }
     return newRules;
-  }, []); // Dependency array is empty
-
-  // Function to remove a rule from a group recursively
-  // Removed `currentRules` from dependency array as it's passed as an argument
+  }, []);
   const removeRule = useCallback((currentRules, path) => {
     const newRules = { ...currentRules };
     let targetParent = newRules;
@@ -105,15 +87,12 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
     const indexToRemove = path[path.length - 1];
     targetParent.rules.splice(indexToRemove, 1);
     return newRules;
-  }, []); // Dependency array is empty
-
-  // Handler for rule changes
+  }, []);
   const handleRuleChange = useCallback((newRules) => {
     setInternalRules(newRules);
-    onRulesChange(newRules); // Notify parent component of changes
+    onRulesChange(newRules); 
   }, [onRulesChange]);
 
-  // Function to fetch audience preview
   const fetchAudiencePreview = useCallback(async () => {
     if (!internalRules || !internalRules.operator || !internalRules.rules.length) {
       setAudienceSize(0);
@@ -126,12 +105,12 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
     setAudienceError(null);
     try {
       const response = await crmApi.getAudiencePreview(internalRules);
-      if (response.data.success) { // FIX: Access .data.success
-        setAudienceSize(response.data.audienceSize); // FIX: Access .data.audienceSize
-        setSampleEmails(response.data.sampleCustomerEmails); // FIX: Access .data.sampleCustomerEmails
-        onAudienceSizeChange(response.data.audienceSize); // FIX: Access .data.audienceSize
+      if (response.data.success) { 
+        setAudienceSize(response.data.audienceSize); 
+        setSampleEmails(response.data.sampleCustomerEmails); 
+        onAudienceSizeChange(response.data.audienceSize);
       } else {
-        setAudienceError(response.data.message || 'Failed to get audience preview.'); // FIX: Access .data.message
+        setAudienceError(response.data.message || 'Failed to get audience preview.');
       }
     } catch (error) {
       console.error('Error fetching audience preview:', error);
@@ -141,22 +120,21 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
     }
   }, [internalRules, onAudienceSizeChange]);
 
-  // Debounce effect for audience preview
   useEffect(() => {
     const handler = setTimeout(() => {
       fetchAudiencePreview();
-    }, 500); // Debounce for 500ms
+    }, 500); 
 
     return () => {
       clearTimeout(handler);
     };
-  }, [internalRules, fetchAudiencePreview]); // Re-run when internalRules change
+  }, [internalRules, fetchAudiencePreview]); 
 
-  // Recursive rendering function for rule groups
+  
   const renderRuleGroup = (group, path) => {
     return (
       <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white shadow-sm">
-        {/* Operator selection for the group */}
+     
         <div className="flex items-center mb-4">
           <label htmlFor={`operator-${path.join('-')}`} className="mr-2 text-sm font-medium text-gray-700">
             Combine with:
@@ -170,7 +148,7 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
             <option value="AND">AND</option>
             <option value="OR">OR</option>
           </select>
-          {path.length > 0 && ( // Allow removing nested groups, but not the root
+          {path.length > 0 && ( 
             <button
               type="button"
               onClick={() => handleRuleChange(removeRule(internalRules, path))}
@@ -182,25 +160,24 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
           )}
         </div>
 
-        {/* Render individual rules or nested groups */}
         {group.rules.map((rule, index) => {
           const currentPath = [...path, index];
           if (rule.operator) {
-            // It's a nested group
+            
             return (
               <div key={index} className="ml-4 border-l-2 border-indigo-200 pl-4 py-2">
                 {renderRuleGroup(rule, currentPath)}
               </div>
             );
           } else {
-            // It's an individual rule
+            
             const selectedField = fields.find(f => f.value === rule.field);
             const conditions = selectedField ? getConditionsForField(selectedField.type) : [];
             const isDateCondition = selectedField && selectedField.type === 'date';
 
             return (
               <div key={index} className="flex flex-wrap items-center gap-3 mb-3 p-3 bg-gray-50 rounded-md border border-gray-200">
-                {/* Field selection */}
+                
                 <select
                   value={rule.field}
                   onChange={(e) => handleRuleChange(updateRule(internalRules, currentPath, 'field', e.target.value))}
@@ -212,7 +189,6 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
                   ))}
                 </select>
 
-                {/* Condition selection */}
                 <select
                   value={rule.condition}
                   onChange={(e) => handleRuleChange(updateRule(internalRules, currentPath, 'condition', e.target.value))}
@@ -225,7 +201,7 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
                   ))}
                 </select>
 
-                {/* Value input */}
+               
                 <input
                   type={isDateCondition ? 'number' : (selectedField?.type === 'number' ? 'number' : 'text')}
                   value={rule.value}
@@ -235,7 +211,6 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
                   disabled={!rule.condition}
                 />
 
-                {/* Remove rule button */}
                 <button
                   type="button"
                   onClick={() => handleRuleChange(removeRule(internalRules, currentPath))}
@@ -249,7 +224,7 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
           }
         })}
 
-        {/* Add Rule/Group buttons */}
+       
         <div className="flex space-x-2 mt-4">
           <button
             type="button"
@@ -274,10 +249,10 @@ const RuleBuilder = ({ rules, onRulesChange, onAudienceSizeChange }) => {
 
   return (
     <div className="rule-builder">
-      {/* Render the root rule group */}
+  
       {renderRuleGroup(internalRules, [])}
 
-      {/* Audience Preview */}
+    
       <div className="mt-6 p-4 bg-indigo-50 border border-indigo-200 rounded-lg shadow-inner">
         <h4 className="text-lg font-semibold text-indigo-800 mb-2">Audience Preview</h4>
         {loadingAudience ? (

@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import crmApi from '../api/crmApi';
-import { UserGroupIcon, ShoppingCartIcon, MegaphoneIcon } from '@heroicons/react/24/outline'; // Icons
-
-/**
- * DashboardPage component displays a summary of CRM data.
- * It fetches basic statistics if the user is authenticated.
- */
+import { UserGroupIcon, ShoppingCartIcon, MegaphoneIcon } from '@heroicons/react/24/outline'; 
 const DashboardPage = () => {
   const { isAuthenticated, isLoading } = useAuth();
   const [stats, setStats] = useState({
@@ -33,16 +28,14 @@ const DashboardPage = () => {
           crmApi.getCampaigns(),
         ]);
 
-        // FIX: Access .data property from Axios response
         setStats({
-          totalCustomers: customersRes.data.customers?.length, // FIX: Access .data
-          totalOrders: ordersRes.data.orders?.length,         // FIX: Access .data
-          totalCampaigns: campaignsRes.data.campaigns?.length, // FIX: Access .data
-          recentCampaigns: campaignsRes.data.campaigns?.slice(0, 5), // FIX: Access .data
+          totalCustomers: customersRes.data.customers?.length, 
+          totalOrders: ordersRes.data.orders?.length,        
+          totalCampaigns: campaignsRes.data.campaigns?.length, 
+          recentCampaigns: campaignsRes.data.campaigns?.slice(0, 5), 
         });
       } catch (err) {
         console.error('Error fetching dashboard stats:', err);
-        // More descriptive error message from backend if available
         setError(err.response?.data?.message || 'Failed to load dashboard statistics. Please try again later.');
       } finally {
         setLoadingStats(false);
@@ -50,7 +43,7 @@ const DashboardPage = () => {
     };
 
     fetchStats();
-  }, [isAuthenticated]); // Re-fetch when auth status changes
+  }, [isAuthenticated]);
 
   if (isLoading) {
     return (
@@ -81,7 +74,7 @@ const DashboardPage = () => {
       {isAuthenticated && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            {/* Stat Card: Total Customers */}
+            
             <div className="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4 transition-all duration-300 hover:shadow-lg hover:scale-105">
               <div className="flex-shrink-0 bg-indigo-100 p-3 rounded-full">
                 <UserGroupIcon className="h-8 w-8 text-indigo-600" aria-hidden="true" />
@@ -94,7 +87,7 @@ const DashboardPage = () => {
               </div>
             </div>
 
-            {/* Stat Card: Total Orders */}
+        
             <div className="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4 transition-all duration-300 hover:shadow-lg hover:scale-105">
               <div className="flex-shrink-0 bg-green-100 p-3 rounded-full">
                 <ShoppingCartIcon className="h-8 w-8 text-green-600" aria-hidden="true" />
@@ -107,7 +100,7 @@ const DashboardPage = () => {
               </div>
             </div>
 
-            {/* Stat Card: Total Campaigns */}
+           
             <div className="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4 transition-all duration-300 hover:shadow-lg hover:scale-105">
               <div className="flex-shrink-0 bg-purple-100 p-3 rounded-full">
                 <MegaphoneIcon className="h-8 w-8 text-purple-600" aria-hidden="true" />
@@ -121,7 +114,6 @@ const DashboardPage = () => {
             </div>
           </div>
 
-          {/* Recent Campaigns Section */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Recent Campaigns</h2>
             {loadingStats ? (
