@@ -1,7 +1,7 @@
-##Mini CRM Frontend
+#Mini CRM Frontend
 This is the frontend application for the Mini CRM platform, built with React and Tailwind CSS. It provides a user-friendly interface for managing customers, orders, and marketing campaigns, including AI-powered segmentation capabilities.
 
-##✨ Features
+#✨ Features
 Google OAuth Integration: Secure user authentication via Google.
 
 Dashboard: Overview of key CRM metrics (total customers, orders, campaigns).
@@ -36,7 +36,7 @@ Responsive Design: Optimized for various screen sizes (desktop, tablet, mobile).
 
 Modern UI: Clean and intuitive interface using Tailwind CSS and Headless UI components.
 
-##🚀 Technologies Used
+#🚀 Technologies Used
 React.js: A JavaScript library for building user interfaces.
 
 Tailwind CSS: A utility-first CSS framework for rapidly building custom designs.
@@ -49,15 +49,15 @@ Axios: Promise-based HTTP client for making API requests to the backend.
 
 Heroicons: Beautiful hand-crafted SVG icons.
 
-##⚙️ Setup and Local Development
+#⚙️ Setup and Local Development
 Follow these steps to get the frontend running on your local machine.
 
-##Prerequisites
+#Prerequisites
 Node.js (LTS version recommended)
 
 npm (Node Package Manager) or yarn
 
-##Installation
+#Installation
 Clone the repository:
 
 git clone <your-frontend-repo-url>
@@ -68,7 +68,7 @@ cd mini-crm/frontend
 Install dependencies:
 
 npm install
-# OR
+ OR
 yarn install
 
 Create a .env file:
@@ -90,7 +90,7 @@ This will typically open your application in your browser at http://localhost:30
 Ensure the Backend is Running:
 This frontend application requires the Mini CRM Backend to be running. Make sure you have followed the backend setup instructions and started the backend server (usually on http://localhost:5000).
 
-💡 Usage
+#💡 Usage
 Once the application is running:
 
 Login: Click "Login with Google" to authenticate. You will be redirected to Google for authentication and then back to the dashboard.
@@ -107,7 +107,7 @@ Orders: Add, view, and manage customer orders.
 
 Interact: Use the forms and tables to add new data, edit existing records, and delete entries. Experiment with the AI-powered segmentation by typing natural language queries.
 
-📂 Project Structure
+#📂 Project Structure
 frontend/
 ├── public/                  # Public assets
 ├── src/
@@ -124,8 +124,8 @@ frontend/
 ├── package.json             # Project dependencies and scripts
 └── README.md                # This file
 
-🤝 Contributing
+#🤝 Contributing
 Contributions are welcome! If you have suggestions for improvements or find bugs, please feel free to open an issue or submit a pull request.
 
-📄 License
+#📄 License
 This project is licensed under the MIT License.
