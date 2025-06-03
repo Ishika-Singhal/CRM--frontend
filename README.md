@@ -1,131 +1,124 @@
-#Mini CRM Frontend
-This is the frontend application for the Mini CRM platform, built with React and Tailwind CSS. It provides a user-friendly interface for managing customers, orders, and marketing campaigns, including AI-powered segmentation capabilities.
+# Mini CRM Frontend
 
-#✨ Features
-Google OAuth Integration: Secure user authentication via Google.
+This is the **frontend application** for the **Mini CRM platform**, built with **React** and **Tailwind CSS**. It provides a user-friendly interface for managing customers, orders, and marketing campaigns—including AI-powered segmentation capabilities.
 
-Dashboard: Overview of key CRM metrics (total customers, orders, campaigns).
+---
 
-Customer Management:
+## ✨ Features
 
-View, add, edit, and delete customer records.
+- **Google OAuth Integration**: Secure user authentication via Google.
+- **Dashboard**: Overview of key CRM metrics (total customers, orders, campaigns).
+- **Customer Management**:
+  - View, add, edit, and delete customer records.
+  - Customer details include ID, name, email, phone, address, total spend, and total visits.
+- **Order Management**:
+  - View, add, edit, and delete order records.
+  - Orders linked to customers with details like order ID, date, total amount, items, and status.
+- **Campaign Management**:
+  - Create, view, and delete marketing campaigns.
+  - **Dynamic Segmentation**: Build complex segments using a rule builder (spend, visits, activity, demographics, etc.).
+  - **AI-Powered Segmentation**: Generate rules from natural language using the Gemini API.
+  - **Audience Preview**: Estimate audience size and preview emails for defined segments.
+  - **Campaign Delivery Simulation**: Simulate sending messages to targeted segments.
+  - **Communication Logs**: View logs of sent messages, including delivery status and failure reasons.
+- **Responsive Design**: Works on desktop, tablet, and mobile.
+- **Modern UI**: Clean and intuitive interface using Tailwind CSS and Headless UI.
 
-Customer details include ID, name, email, phone, address, total spend, and total visits.
+---
 
-Order Management:
+## 🚀 Technologies Used
 
-View, add, edit, and delete order records.
+- **React.js** – Frontend UI framework.
+- **Tailwind CSS** – Utility-first CSS framework.
+- **Headless UI** – Accessible unstyled components.
+- **React Router DOM** – Client-side routing.
+- **Axios** – HTTP client for API communication.
+- **Heroicons** – Beautiful SVG icon library.
 
-Orders are linked to customers and include details like order ID, date, total amount, items, and status.
+---
 
-Campaign Management:
+## ⚙️ Setup & Local Development
 
-Create, view, and delete marketing campaigns.
+### Prerequisites
 
-Dynamic Segmentation: Build complex customer segments using a rule builder with various fields (spend, visits, activity, demographics) and conditions (equals, greater than, contains, inactive days, etc.).
+- Node.js (LTS recommended)
+- npm or yarn
 
-AI-Powered Segmentation: Generate segmentation rules from natural language queries using the Gemini API.
+### Installation
 
-Audience Preview: See the estimated audience size and sample emails for your defined segments.
+1. **Clone the repository**:
 
-Campaign Delivery Simulation: Campaigns are simulated to send messages to the targeted audience.
+   ```bash
+   git clone <your-repo-url>
+   cd mini-crm/frontend
+**Install dependencies:
 
-Communication Logs: View detailed logs of messages sent for each campaign, including delivery status and failure reasons.
-
-Responsive Design: Optimized for various screen sizes (desktop, tablet, mobile).
-
-Modern UI: Clean and intuitive interface using Tailwind CSS and Headless UI components.
-
-#🚀 Technologies Used
-React.js: A JavaScript library for building user interfaces.
-
-Tailwind CSS: A utility-first CSS framework for rapidly building custom designs.
-
-Headless UI: Completely unstyled, fully accessible UI components, designed to integrate beautifully with Tailwind CSS.
-
-React Router DOM: For declarative routing in the application.
-
-Axios: Promise-based HTTP client for making API requests to the backend.
-
-Heroicons: Beautiful hand-crafted SVG icons.
-
-#⚙️ Setup and Local Development
-Follow these steps to get the frontend running on your local machine.
-
-#Prerequisites
-Node.js (LTS version recommended)
-
-npm (Node Package Manager) or yarn
-
-#Installation
-Clone the repository:
-
-git clone <your-frontend-repo-url>
-cd mini-crm/frontend
-
-(Replace <your-frontend-repo-url> with the actual URL of your frontend repository)
-
-Install dependencies:
 
 npm install
- OR
+# OR
 yarn install
+Configure environment variables:
 
-Create a .env file:
-In the frontend/ directory, create a file named .env and add the following:
+Create a .env file in the frontend/ directory:
 
-REACT_APP_BACKEND_URL=[https://crm-backend-64da.onrender.com]
+REACT_APP_BACKEND_URL=https://crm-backend-64da.onrender.com
+If you're using Vite, the variable should be VITE_APP_BACKEND_URL.
 
-Note: If your backend is running on a different port (e.g., 5001), adjust http://localhost:5000 accordingly. If you are using Vite for your React app, ensure the variable starts with VITE_ (e.g., VITE_APP_BACKEND_URL).
+Start the frontend server:
 
-Running the Application
-Start the frontend development server:
 
 npm start
 # OR
 yarn start
+This typically runs at http://localhost:3000 (or http://localhost:5173 for Vite).
 
-This will typically open your application in your browser at http://localhost:3000 (or http://localhost:5173 if using Vite).
+Ensure Backend is Running:
 
-Ensure the Backend is Running:
-This frontend application requires the Mini CRM Backend to be running. Make sure you have followed the backend setup instructions and started the backend server (usually on http://localhost:5000).
+The frontend connects to the Mini CRM Backend. Ensure the backend is set up and running (default: http://localhost:5000).
 
-#💡 Usage
-Once the application is running:
+💡 Usage
+Login: Click "Login with Google" to authenticate via Google.
 
-Login: Click "Login with Google" to authenticate. You will be redirected to Google for authentication and then back to the dashboard.
+Navigate using the top navbar:
 
-Navigate: Use the navigation bar to access different sections:
+Dashboard: Summary statistics.
 
-Dashboard: View summary statistics.
+Campaigns: Create/manage campaigns, define segments, view logs.
 
-Campaigns: Create and manage marketing campaigns, define segments, and view delivery logs.
+Customers: Add/view/manage customer profiles.
 
-Customers: Add, view, and manage customer profiles.
+Orders: Add/view/manage customer orders.
 
-Orders: Add, view, and manage customer orders.
+AI Segmentation: Use natural language to generate smart segments using the Gemini API.
 
-Interact: Use the forms and tables to add new data, edit existing records, and delete entries. Experiment with the AI-powered segmentation by typing natural language queries.
-
-#📂 Project Structure
+📂 Project Structure
+graphql
+Copy
+Edit
 frontend/
-├── public/                  # Public assets
+├── public/                # Public assets
 ├── src/
-│   ├── api/                 # API client (axios setup, crmApi.js)
-│   ├── components/          # Reusable UI components (Navbar, MessageModal, RuleBuilder, PrivateRoute, AuthStatus)
-│   ├── contexts/            # React Contexts (AuthContext)
-│   ├── hooks/               # Custom React Hooks (useAuth)
-│   ├── pages/               # Top-level page components (DashboardPage, CampaignListPage, LoginPage, etc.)
-│   ├── utils/               # Utility functions (helpers.js)
-│   ├── App.js               # Main application component
-│   ├── index.js             # Entry point for React app
-│   └── index.css            # Tailwind CSS imports and custom styles
-├── .env.example             # Example environment variables
-├── package.json             # Project dependencies and scripts
-└── README.md                # This file
+│   ├── api/               # API client (axios setup, crmApi.js)
+│   ├── components/        # Reusable UI components (Navbar, RuleBuilder, etc.)
+│   ├── contexts/          # React Contexts (AuthContext)
+│   ├── hooks/             # Custom React Hooks (useAuth)
+│   ├── pages/             # Page components (Dashboard, Campaigns, etc.)
+│   ├── utils/             # Utility functions
+│   ├── App.js             # Root component
+│   ├── index.js           # React entry point
+│   └── index.css          # Tailwind CSS and styles
+├── .env.example           # Sample environment variables
+├── package.json           # Project metadata and scripts
+└── README.md              # Project documentation
+🤝 Contributing
+Contributions are welcome! Please open an issue or submit a pull request if you find bugs or have suggestions for improvement.
 
-#🤝 Contributing
-Contributions are welcome! If you have suggestions for improvements or find bugs, please feel free to open an issue or submit a pull request.
 
-#📄 License
-This project is licensed under the MIT License.
+
+
+
+
+
+
+
+=
